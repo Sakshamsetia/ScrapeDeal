@@ -1,15 +1,10 @@
 import requests
-from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
 import time
 import random
+import selenium
 
-amazon_url = "https://www.amazon.in/s?k="
-flipkart_url = "https://www.flipkart.com/search?q="
-
-
-
-def scrape(query:str,url:str)->str:
+def scrape(url:str,query:str="")->str:
     ACCEPT_LANGS = [
     "en-US,en;q=0.9",
     "en-GB,en;q=0.8",
@@ -26,12 +21,6 @@ def scrape(query:str,url:str)->str:
         "Connection":"keep-alive"
     }
     time.sleep(random.uniform(1,4))
-    html = session.get(url+query.replace(' ','+'),headers=header).text
-    return html    
-# Trying Scrape Websites {
-# a = scrape("Laptops",amazon_url)
-# with open("web.html","w",encoding="utf-8") as f:
-#     f.write(a)
-# a = scrape("Laptops",flipkart_url)
-# with open("web2.html","w",encoding="utf-8") as f:
-#      f.write(a)}
+    html = session.get(url+query.replace(' ','+'),headers=header)
+    html.encoding = "utf-8"
+    return html.text
